@@ -26,6 +26,14 @@ in
       '';
     };
 
+    package = mkOption {
+      type = format.package;
+      default = pkgs.n8n;
+      description = lib.mdDoc ''
+        The n8n package to use
+      '';
+    };
+
     webhookUrl = mkOption {
       type = types.str;
       default = "";
@@ -61,7 +69,7 @@ in
       };
       serviceConfig = {
         Type = "simple";
-        ExecStart = "${pkgs.n8n}/bin/n8n";
+        ExecStart = "${cfg.package}/bin/n8n";
         Restart = "on-failure";
         StateDirectory = "n8n";
 
