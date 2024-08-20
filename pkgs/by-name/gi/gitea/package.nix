@@ -17,7 +17,17 @@
 , buildNpmPackage
 }:
 
-let
+buildGoModule rec {
+  pname = "gitea";
+  version = "1.22.1";
+
+  src = fetchFromGitHub {
+    owner = "go-gitea";
+    repo = "gitea";
+    rev = "v${gitea.version}";
+    hash = "sha256-s7su3gMdXv2sT1uYYtx29n7QDvmPU9QB3QR6ctOlE58=";
+  };
+
   frontend = buildNpmPackage {
     pname = "gitea-frontend";
     inherit (gitea) src version;
@@ -33,16 +43,6 @@ let
       mkdir -p $out
       cp -R public $out/
     '';
-  };
-in buildGoModule rec {
-  pname = "gitea";
-  version = "1.22.1";
-
-  src = fetchFromGitHub {
-    owner = "go-gitea";
-    repo = "gitea";
-    rev = "v${gitea.version}";
-    hash = "sha256-s7su3gMdXv2sT1uYYtx29n7QDvmPU9QB3QR6ctOlE58=";
   };
 
   vendorHash = "sha256-nzhjIfQMzSf1nuBMTIe0xn+NMDFbDZ9jRHu8Nwzmp4w=";
