@@ -14,7 +14,13 @@ in
   options = {
     services.litellm = {
       enable = lib.mkEnableOption "LiteLLM server";
-      package = lib.mkPackageOption pkgs "litellm" { };
+      package = lib.mkPackageOption pkgs "litellm" {
+        default = pkgs.python3Packages.litellm.overridePythonAttrs {
+          dependencies =
+            pkgs.python3Packages.litellm.dependencies
+            ++ pkgs.python3Packages.litellm.passthru.optional-dependencies.proxy;
+        };
+      };
 
       stateDir = lib.mkOption {
         type = types.path;
